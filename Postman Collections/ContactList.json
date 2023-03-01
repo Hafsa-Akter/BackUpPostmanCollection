@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "01c6fde7-1889-41d5-a024-04fce19325ef",
+		"name": "Contact List",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic Endpoints Test",
+			"item": [
+				{
+					"name": "GET Contacts List",
+					"_postman_id": "de697686-1fc2-408e-9d34-fd019887784a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "3.13.86.142:3000/contacts"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3270a930-dc51-4bc9-a80e-c3838f8ca8e9",
+								"exec": [
+									"var jsonData=pm.response.json();\r",
+									"pm.environment.set(\"contactId\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"Missing email is required\", function () {\r",
+									"    pm.response.to.have.body(\"Email is required\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "e2ad6f93-ddc4-422b-a346-049b58fb9d36",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"hafsa@gmail.com\",\r\n    \"location\": {\r\n        \"city\": \"Boston, MA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Tester\",\r\n    \t\"company\": \"Microsoft\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ae2f13f4-4e60-46b1-a367-a2b365c6e43c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\",\"application/json; charset=utf-8\");\r",
+									"});\r",
+									"pm.test(\"Correct first name is returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.firstName).to.eql(environment.firstName);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "4c8bac8c-4409-49f0-927a-00e9843aa352",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://3.13.86.142:3000/contacts/{{contactId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contact",
+					"_postman_id": "49825d23-4929-4211-a0a5-a78dadc7627e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Hafsa\",\r\n    \"lastName\": \"Akter\",\r\n    \"email\": \"hafsa@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"Narayanganj\",\r\n        \"country\": \"Bangladesh\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Engineer\",\r\n    \t\"company\": \"Therap\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts/63f0907efd15980f0d6c6edb"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Contact",
+					"_postman_id": "bf6234cc-f2f0-4170-bddd-65d469753a39",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://3.13.86.142:3000/contacts/63f0907efd15980f0d6c6edb"
+					},
+					"response": []
+				}
+			],
+			"_postman_id": "46887048-0349-4991-a75e-d7dac331e81f"
+		},
+		{
+			"name": "Negative Test",
+			"item": [
+				{
+					"name": "GET Contact Not Found",
+					"_postman_id": "ced7ee83-4047-41b8-8c3f-59a94621f506",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://3.13.86.142:3000/contacts/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact Missing First Name",
+					"_postman_id": "4373b70c-e3ca-47a5-a279-9f99b0ef86cc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Sumi\",\r\n    \"lastName\": \"Smith\",\r\n    \"email\": \"asmith@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"Boston, MA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Tester\",\r\n    \t\"company\": \"Microsoft\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact  Company Too Long",
+					"_postman_id": "3cd1c808-f8a8-4381-80db-a4f93919b92f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Amy\",\r\n    \"lastName\": \"Smith\",\r\n    \"email\": \"asmith@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"Boston, MA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Tester\",\r\n    \t\"company\": \"abcdefghijklmnopqrstjkkkkkkhgjgnfhhhghjgjjj\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact Last name invalid",
+					"_postman_id": "277ab27a-5719-4b22-b267-d9746d8f2012",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Amy\",\r\n    \"lastName\": \"Smith;\",\r\n    \"email\": \"asmith@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"Boston, MA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Tester\",\r\n    \t\"company\": \"Microsoft\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact Invalid Email",
+					"_postman_id": "0c95984a-b9af-4e87-9284-c23e0beab1a5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Amy\",\r\n    \"lastName\": \"Smith\",\r\n    \"email\": \"asmith@thinkingtester\",\r\n    \"location\": {\r\n        \"city\": \"Boston, MA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Tester\",\r\n    \t\"company\": \"Microsoft\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3270a930-dc51-4bc9-a80e-c3838f8ca8e9",
+								"exec": [
+									"\r",
+									"pm.test(\"Missing email is required\", function () {\r",
+									"    pm.response.to.have.body(\"Email is required\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "e4569e83-b79d-47df-bab0-12014142f8c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"\",\r\n    \"location\": {\r\n        \"city\": \"Boston, MA\",\r\n        \"country\": \"USA\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Tester\",\r\n    \t\"company\": \"Microsoft\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contact",
+					"_postman_id": "30d36532-3aab-4b5f-aaaa-88f6ca690d27",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Hafsa\",\r\n    \"lastName\": \"Akter\",\r\n    \"email\": \"hafsa@thinkingtester.com\",\r\n    \"location\": {\r\n        \"city\": \"Narayanganj\",\r\n        \"country\": \"Bangladesh\"\r\n    },\r\n    \"employer\": {\r\n    \t\"jobTitle\": \"Software Engineer\",\r\n    \t\"company\": \"Therap\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "3.13.86.142:3000/contacts/63f0907efd15980f0d6c6edb"
+					},
+					"response": []
+				}
+			],
+			"_postman_id": "7bf1b324-aace-459c-8521-2673378eaf46"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "135cd1e0-4c3a-4f43-934b-a251fc99d23e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a6c6a62a-7e14-48be-be14-514df725c2af",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response time is less than 3000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+					"});"
+				]
+			}
+		}
+	]
+}
